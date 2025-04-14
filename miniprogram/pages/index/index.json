@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "map": "/components/map/map",
+    "marker-info":"/components/marker-info/marker-info",
+    "search":"/components/search/search",
+    "function-picker": "/components/function-picker/function-picker"
+  }
+}

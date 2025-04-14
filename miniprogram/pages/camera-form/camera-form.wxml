@@ -1,0 +1,52 @@
+<view class="form-container">
+
+  <view class="form-item">
+    <text>监控类型</text>
+    <input type="text" value="{{markerData.cameraType}}" bindtap="showTypePicker" readonly disabled="disabled" />
+  </view>
+
+  <view class="form-item">
+    <text>监控名称</text>
+    <input type="text" value="{{markerData.name}}" placeholder="请输入监控名称" bindinput="onNameInput" data-field="name" />
+  </view>
+
+  <view class="form-item">
+    <text>所属单位</text>
+    <input type="text" value="{{markerData.owner}}" bindinput="onOwnerInput" data-field="owner" />
+  </view>
+
+  <view class="form-item">
+    <text>联系电话</text>
+    <input type="number" value="{{markerData.tel}}" placeholder="请输入联系电话" bindinput="onPhoneInput" data-field="tel" />
+  </view>
+
+  <view class="form-item" wx:if="{{markerData.cameraType != '球机'}}">
+    <text>照射方向</text>
+    <input type="text" value="{{markerData.angle}}" placeholder="请选择照射方向" bindtap="onAngleInput" readonly disabled="disabled" />
+  </view>
+
+  <!-- <view class="form-item">
+    <text>显示级别---{{markerData.level}}</text>
+    <slider min="10" max="19" step="1" value="{{markerData.level}}" 
+    bindchange="onSliderChange"
+    bindchanging="onSliderChange" />
+  </view> -->
+
+  <view class="upload-photo">
+    <image src="/assets/upload_image.svg" class="upload-btn" bindtap="choosePhoto" />
+    <image src="{{markerData.imageUrl}}" class="photo-preview" />
+  </view>
+
+  <view class="buttons" >
+    <button class="confirm-btn" bindtap="onConfirm" disabled="{{isSubmitDisabled}}">确定</button>
+    <button class="cancel-btn" bindtap="onCancel" disabled="{{isSubmitDisabled}}">取消</button>
+  </view>
+
+  <!-- 照射方向角度选择组件 -->
+  <view wx:if="{{showAnglePicker}}" class="picker-overlay" catchtouchmove="stopTouchMove">
+    <view class="picker-dialog" catchtouchstart="stopTouch" catchtouchmove="stopTouch" catchtouchend="stopTouch">
+      <view class="picker-header">请选择照射方向</view>
+      <angle-picker initialAngle="{{markerData.angle}}" bind:angleChanged="onAngleChanged" />
+    </view>
+  </view>
+</view>

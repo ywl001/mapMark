@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "angle-picker":"/components/angle-picker/angle-picker"
+  }
+}

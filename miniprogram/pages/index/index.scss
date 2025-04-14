@@ -1,0 +1,20 @@
+/* 容器 */
+page{
+  height:100vh;
+  .search{
+    position:absolute;
+    top:10rpx;
+    left:45%;
+    width:90%;
+    transform: translateX(-45%);
+  }
+
+  .marker-info{
+    position:absolute;
+    bottom: 10rpx;
+    width:100%;
+    z-index: 10;
+  }
+}
+
+

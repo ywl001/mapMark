@@ -1,0 +1,33 @@
+<view class="container">
+  <view class="left" wx:if="{{markerData.imageUrl}}" bindtap="previewImage" >
+    <image class="image" src="{{markerData.imageUrl}}" mode="aspectFit"></image>
+  </view>
+  <view class="right">
+    <!-- <view class="row title">{{markerData.name}}</view>
+    <view class="row contact">
+      <view class="contact-info">{{markerData.attr.manager}}</view>
+      <view class="contact-info" bindtap="makePhoneCall">{{markerData.attr.tel}}</view>
+    </view> -->
+
+    <view class="content">
+      <text class="title">{{markerData.name}}</text>
+      <text class="contact-info" wx:if="markerData.owner">{{markerData.owner}}</text>
+      <text class="contact-info" wx:if="markerData.tel">{{markerData.tel}}</text>
+      <!-- <text class="contact-info" wx:if="markerData.level">{{markerData.level}}级</text> -->
+    </view>
+
+    <view class="row buttons" wx:if="isEdit">
+      <view class="button-wrapper" bind:tap="onEdit">
+        <image class="button" src="../../assets/btn_edit.svg" mode="aspectFill"  ></image>
+      </view>
+      <view class="divider"></view>
+      <view class="button-wrapper" bind:tap="onMove">
+        <image class="button" src="../../assets/btn_move.svg" mode="aspectFill"></image>
+      </view>
+      <view class="divider"></view>
+      <view class="button-wrapper" bind:tap="onDelete">
+        <image class="button" src="../../assets/btn_delete.svg" mode="aspectFill" ></image>
+      </view>
+    </view>
+  </view>
+</view>

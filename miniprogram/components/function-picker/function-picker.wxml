@@ -1,0 +1,9 @@
+<view class="mask" wx:if="{{show}}">
+  <view class="modal">
+    <view class="modal-title">{{ title || '请选择操作' }}</view>
+    <view class="modal-options">
+      <button class="option-btn" bindtap="handleMonitor">📷 采集监控</button>
+      <button class="option-btn" bindtap="handlePolice">🚓 采集警务室</button>
+    </view>
+  </view>
+</view>

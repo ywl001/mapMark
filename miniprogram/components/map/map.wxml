@@ -1,0 +1,16 @@
+<!--components/map/map.wxml-->
+<!-- <view class = "container"> -->
+  <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" show-location="true" bind:longpress="onLongpressMap" markers ="{{markers}}" 
+  bindmarkertap="onMarkerTap" bindlabeltap="onMarkerTap" bindregionchange="onRegionChange"
+  bind:tap="onTapMap"
+  bind:touchstart="onMapTouchStart"></map>
+ <!-- 定位按钮：位于地图底部中间 -->
+ <image class="btn-location" src="../../assets/btn_location.svg" bindtap="onLocationClick" />
+
+<!-- 垂直排列的两个按钮，位于右上角 -->
+<!-- <view class="right-buttons">
+<image class="btn-" src="../../assets/btn_layers.svg" bindtap="onBtn1Click" />
+  <image class="btn" src="../../assets/btn_search.svg" bindtap="onBtn2Click" />
+</view> -->
+  
+<!-- </view> -->

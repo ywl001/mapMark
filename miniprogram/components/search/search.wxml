@@ -1,0 +1,11 @@
+<view class="search-container">
+    <view class="search-box">
+      <input class="search-input" placeholder="请输入搜索内容" bindinput="onInput" bindfocus="onFocus" value="{{searchQuery}}" />
+      <image wx:if="{{searchQuery}}" src="../../assets/clear.svg" class="clear-btn" bindtap="clearSearch" />
+    </view>
+    <view wx:if="{{showResults}}" class="search-results">
+      <block wx:for="{{results}}" wx:key="index">
+        <view class="result-item" bind:tap="onClickItem" data-item="{{item}}">{{item.name}}</view>
+      </block>
+    </view>
+  </view>

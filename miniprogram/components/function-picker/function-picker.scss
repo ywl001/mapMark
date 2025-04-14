@@ -1,0 +1,49 @@
+/* components/function-picker/function-picker.wxss */
+.mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 40rpx;
+  border-radius: 24rpx;
+  width: 80%;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.option-btn {
+  font-size: 30rpx;
+  border: none;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  background-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  box-shadow: 0 4rpx 12rpx rgba(0, 191, 255, 0.4);
+  text-align: center;
+}

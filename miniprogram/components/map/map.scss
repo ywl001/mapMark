@@ -1,0 +1,42 @@
+/* components/map/map.wxss */
+/* 样式：容器 */
+.container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+/* 地图铺满全屏 */
+map {
+  width: 100%;
+  height: 100vh;
+}
+
+/* 定位按钮：底部居中 */
+.btn-location {
+  position: absolute;
+  bottom: 50rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 60rpx;
+  z-index: 10;
+}
+
+/* 右上角的两个按钮，垂直布局 */
+.right-buttons {
+  position: absolute;
+  top: 50rpx;
+  right: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+/* 按钮样式 */
+.btn {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 20rpx; /* 两个按钮之间的间距 */
+}

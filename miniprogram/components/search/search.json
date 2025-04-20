@@ -1,4 +1,6 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "icon-button":"/components/icon-button/icon-button"
+  }
 }

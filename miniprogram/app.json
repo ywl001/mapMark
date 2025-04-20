@@ -20,7 +20,14 @@
       "sdkVersionEnd": "15.255.255"
     }
   },
+  
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+
+  "permission": {
+    "scope.userLocation": {
+      "desc": "为了给您提供更好的服务，请授权您的地理位置信息"
+    }
+  }
 }

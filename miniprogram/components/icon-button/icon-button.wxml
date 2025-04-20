@@ -1,0 +1,5 @@
+<image class="btn {{pressed ? 'pressed' : ''}}"
+       style="width: {{size}}rpx; height: {{size}}rpx;"
+       src="{{pressed && pressedSrc ? pressedSrc : src}}"
+       bindtouchstart="onTouchStart"
+       bindtouchend="onTouchEnd" />

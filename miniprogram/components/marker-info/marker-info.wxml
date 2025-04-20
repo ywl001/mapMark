@@ -18,15 +18,15 @@
 
     <view class="row buttons" wx:if="isEdit">
       <view class="button-wrapper" bind:tap="onEdit">
-        <image class="button" src="../../assets/btn_edit.svg" mode="aspectFill"  ></image>
+        <view class="button btn_edit"  ></view>
       </view>
       <view class="divider"></view>
       <view class="button-wrapper" bind:tap="onMove">
-        <image class="button" src="../../assets/btn_move.svg" mode="aspectFill"></image>
+        <view class="button btn_move" ></view>
       </view>
       <view class="divider"></view>
       <view class="button-wrapper" bind:tap="onDelete">
-        <image class="button" src="../../assets/btn_delete.svg" mode="aspectFill" ></image>
+        <view class="button btn_del" ></view>
       </view>
     </view>
   </view>

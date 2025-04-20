@@ -15,10 +15,10 @@
     <input type="text" value="{{markerData.owner}}" bindinput="onOwnerInput" data-field="owner" />
   </view>
 
-  <view class="form-item">
+  <!-- <view class="form-item">
     <text>联系电话</text>
     <input type="number" value="{{markerData.tel}}" placeholder="请输入联系电话" bindinput="onPhoneInput" data-field="tel" />
-  </view>
+  </view> -->
 
   <view class="form-item" wx:if="{{markerData.cameraType != '球机'}}">
     <text>照射方向</text>

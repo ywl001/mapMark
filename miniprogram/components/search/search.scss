@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   border: 1rpx solid #ccc;
-  border-radius: 40rpx;
+  border-radius: 10rpx;
   padding: 0 20rpx;
   background-color: #fff;
 }
@@ -32,21 +32,22 @@
   font-size: 30rpx;
 }
 
-/* 清除按钮 */
-.clear-btn {
+.btn{
   width: 40rpx;
   height: 40rpx;
-  margin-left: 10rpx;
+  margin-right: 20rpx;
 }
 
 /* 查询结果 */
 .search-results {
   width: 90%;
-  margin-top: 20rpx;
+  height: 500rpx;
+  margin-top: 5rpx;
   background-color: #f5f5f5;
   border-radius: 10rpx;
   padding: 10rpx;
   box-shadow: 0 5rpx 10rpx rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 .result-item {

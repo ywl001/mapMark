@@ -72,12 +72,39 @@
 }
 
 .button-wrapper:active {
-  background-color: #e43030; /* 点击后的背景色 */
+  background-color: #d5ff1a; /* 点击后的背景色 */
 }
 
 .button {
-  width: 30rpx;
-  height: 30rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.btn_del{
+  background-image: url('https://7977-ywl-mj-3g8u5dnn5bbb7c77-1333600691.tcb.qcloud.la/assets/btn_delete.svg?sign=4f3c8d4d171dbbccd5caa38b7b8d95c0&t=1744682287');
+  background-size: cover;
+}
+
+.btn_del:active {
+  background-image: url('https://7977-ywl-mj-3g8u5dnn5bbb7c77-1333600691.tcb.qcloud.la/assets/btn_delete_press.svg?sign=2b8c3ac1ae7579daca45dc55f41efac7&t=1744682570');
+}
+
+.btn_move{
+  background-image: url('https://7977-ywl-mj-3g8u5dnn5bbb7c77-1333600691.tcb.qcloud.la/assets/btn_move.svg?sign=254c014bc921b95393fa0f75a0a0ffa2&t=1744700487');
+  background-size: cover;
+}
+
+.btn_move:active {
+  background-image: url('https://7977-ywl-mj-3g8u5dnn5bbb7c77-1333600691.tcb.qcloud.la/assets/btn_move_press.svg?sign=219deb942d792bd5df47fbf96609e0a5&t=1744700526');
+}
+
+.btn_edit{
+  background-image: url('https://7977-ywl-mj-3g8u5dnn5bbb7c77-1333600691.tcb.qcloud.la/assets/btn_edit.svg?sign=d786c6fdcf00c619d522244b36b570cc&t=1744700620');
+  background-size: cover;
+}
+
+.btn_edit:active {
+  background-image: url('https://7977-ywl-mj-3g8u5dnn5bbb7c77-1333600691.tcb.qcloud.la/assets/btn_edit_press.svg?sign=d7b6f24fae9685e19eb35846e62c9cae&t=1744700643');
 }
 
 .divider {

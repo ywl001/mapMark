@@ -1,3 +1,4 @@
+import { MarkerData } from '../../app-types';
 import db from '../../utils/db';
 import { AppEvent } from '../../utils/event-bus/event-type';
 import EventBus from '../../utils/event-bus/EventBus';
@@ -7,7 +8,7 @@ Component({
   properties: {
     markerData: {} as any
   },
-  
+
   data: {
     isEdit: true
   },
@@ -26,7 +27,6 @@ Component({
       app.globalData.markerData = this.properties.markerData;
       console.log(this.properties.markerData.type)
       if (this.properties.markerData.type == 'camera') {
-        console.log('jjjjjj')
         wx.navigateTo({
           url: `/pages/camera-form/camera-form`
         });
@@ -35,7 +35,6 @@ Component({
           url: `/pages/create_jws/create_jws`
         });
       }
-
     },
     onMove() {
       // 处理移动按钮点击
@@ -47,38 +46,27 @@ Component({
         duration: 2000
       });
     },
-    onDelete() {
+    async onDelete() {
       // 处理删除按钮点击
       console.log('click btn del');
       const fileId = this.data.markerData.imageUrl;
-      alertTool('删除警告', '确定要删除该记录吗？').then((res: any) => {
-        if (res) {
-          db.deleteById('mark', this.data.markerData._id).then((res: any) => {
-            console.log(res)
-            if (res) {
-              if (fileId) {
-                return wx.cloud.deleteFile({ fileList: [fileId] });
-              }
-            }
-            return res
-          }).then((res: any) => {
-            console.log(res)
-            if (res) {
-              EventBus.emit(AppEvent.REFRESH_MARKER);
-              EventBus.emit(AppEvent.REMOVE_MARKER_INFO);
-              wx.showToast({
-                title: '删除成功',
-                icon: 'success',
-              });
-            } else {
-              wx.showToast({
-                title: '删除失败',
-                icon: 'error',
-              });
-            }
-          })
+      const res = await alertTool('删除警告', '确定要删除该记录吗？')
+      console.log(res)
+      if (res) {
+        const delResult = await db.deleteById('mark', this.data.markerData._id)
+        if (delResult) {
+          EventBus.emit(AppEvent.DEL_MARK,this.data.markerData._id)
+          if (fileId) {
+            await wx.cloud.deleteFile({ fileList: [fileId] });
+          }
+          EventBus.emit(AppEvent.DEL_MARK,this.data.markerData._id)
+        }else{
+          wx.showToast({
+            title: '删除失败',
+            icon: 'error',
+          });
         }
-      })
+      }
     },
     // 添加拨打电话的功能
     makePhoneCall() {

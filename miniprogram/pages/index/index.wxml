@@ -3,4 +3,4 @@
   <marker-info class="marker-info" wx:if="{{currentMarkerData.name}}" markerData="{{currentMarkerData}}"></marker-info>
   <search class="search"></search>
 </view>
-<function-picker show="{{showPicker}}" bind:select="onPickerSelect" />
+<!-- <function-picker show="{{showPicker}}" bind:select="onPickerSelect" /> -->

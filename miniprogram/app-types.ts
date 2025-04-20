@@ -32,13 +32,16 @@ export interface MapExtent {
 }
 
 export interface MapRegionChangeEvent {
-  detail: { region: MapRegion, scale: number }
+  detail: { region: MapRegion, scale: number, centerLocation: { latitude: number, longitude: number } }
   type: 'begin' | 'end'
 }
 
 export interface Marker {
   /** 标记点 id，点击事件中会返回 */
   id: number;
+
+  // 数据库中的_id
+  _id: string;
 
   /** 聚合簇的 id，用于点聚合 */
   clusterId?: number;
@@ -97,7 +100,7 @@ export interface Marker {
   /** 碰撞类型 */
   collision?: string;
 
-//自己添加的属性
+  //自己添加的属性
   source?: any,
   iconSelected?: string,
   icon?: any

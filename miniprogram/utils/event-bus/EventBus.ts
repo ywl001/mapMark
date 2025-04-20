@@ -1,41 +1,60 @@
-// // event-bus.ts
-type Callback<T = void> = (payload: T) => void;
+import { AppEvent, EventPayloadMap } from "./event-type";
 
-export class EventBus<EventPayloadMap extends Record<string, any> = {}> {
-  private listeners: Map<string, Set<Callback>> = new Map();
+type EventHandler<T> = (payload: T) => void;
 
-  on<K extends string>(
+class EventBus {
+  private handlers: {
+    [K in AppEvent]?: Array<EventHandler<EventPayloadMap[K]>>;
+  } = {};
+
+  /**
+   * Register an event handler
+   * @param event The event to listen for
+   * @param handler The handler function
+   */
+  on<K extends AppEvent>(
     event: K,
-    callback: Callback<K extends keyof EventPayloadMap ? EventPayloadMap[K] : void>
-  ) {
-    if (!this.listeners.has(event)) {
-      this.listeners.set(event, new Set());
+    handler: EventHandler<EventPayloadMap[K]>
+  ): void {
+    if (!this.handlers[event]) {
+      this.handlers[event] = [];
     }
-    this.listeners.get(event)!.add(callback as Callback);
+    (this.handlers[event] as Array<EventHandler<EventPayloadMap[K]>>).push(handler);
   }
 
-  off<K extends string>(
+  /**
+   * Unregister an event handler
+   * @param event The event to remove listener from
+   * @param handler The handler function to remove
+   */
+  off<K extends AppEvent>(
     event: K,
-    callback: Callback<K extends keyof EventPayloadMap ? EventPayloadMap[K] : void>
-  ) {
-    this.listeners.get(event)?.delete(callback as Callback);
+    handler: EventHandler<EventPayloadMap[K]>
+  ): void {
+    if (!this.handlers[event]) return;
+    
+    const index = (this.handlers[event] as Array<EventHandler<EventPayloadMap[K]>>)
+      .indexOf(handler);
+    
+    if (index > -1) {
+      (this.handlers[event] as Array<EventHandler<EventPayloadMap[K]>>).splice(index, 1);
+    }
   }
 
-  emit<K extends string>(
+  /**
+   * Emit an event
+   * @param event The event to emit
+   * @param payload The payload to pass to handlers
+   */
+  emit<K extends AppEvent>(
     event: K,
-    payload?: K extends keyof EventPayloadMap ? EventPayloadMap[K] : void
-  ) {
-    this.listeners.get(event)?.forEach((cb) => {
-      (cb as Callback<any>)(payload);
-    });
-  }
-
-  offAll(event: string) {
-    this.listeners.delete(event);
-  }
-
-  clear() {
-    this.listeners.clear();
+    ...args: EventPayloadMap[K] extends void ? [] : [payload: EventPayloadMap[K]]
+  ): void {
+    if (!this.handlers[event]) return;
+    
+    const payload = args[0] as EventPayloadMap[K];
+    (this.handlers[event] as Array<EventHandler<EventPayloadMap[K]>>)
+      .forEach(handler => handler(payload));
   }
 }
 export default new EventBus()

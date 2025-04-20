@@ -1,3 +1,4 @@
+import cloudFunctions from "../../utils/cloud-functions";
 import db from "../../utils/db";
 import { AppEvent } from "../../utils/event-bus/event-type";
 import EventBus from "../../utils/event-bus/EventBus";
@@ -18,6 +19,8 @@ Component({
   data: {
     showResults: false, // 是否显示查询结果
     results: [] as any[], // 查询结果数组
+    keyword: '',
+    resultMap:{} as any
   },
 
   /**
@@ -25,13 +28,13 @@ Component({
    */
   methods: {
     // 输入事件
-    onInput(e:any) {
-      const query = e.detail.value;
+    onInput(e: any) {
+      const keyword = e.detail.value;
       this.setData({
-        searchQuery: query
+        keyword
       });
-      if (query.length >= 2) {
-        this.fetchResults(query);
+      if (keyword.length >= 2) {
+        this.fetchResults(keyword);
       } else {
         this.setData({
           results: [],
@@ -56,27 +59,48 @@ Component({
         results: [],
         showResults: false
       });
+      EventBus.emit(AppEvent.CLEAR_SEARCH_MARKER)
     },
 
-    // 模拟获取查询结果
-    fetchResults(keyword:string) {
-      const wdb = wx.cloud.database();
-      const query = {name: wdb.RegExp({regexp: keyword})}
-
-      db.get("mark", query, 1000).then(res=>{
-        console.log(res)
+    // 获取查询结果
+    fetchResults(keyword: string) {
+      const res = this.data.resultMap[keyword]
+      if(res && res.length > 0){
+        console.log('从map中获取结果,res',res)
         this.setData({
           results: res,
-          showResults: res.length > 0,
+          showResults: true,
         });
+      }else{
+        const wdb = wx.cloud.database();
+        const query = { name: wdb.RegExp({ regexp: keyword }) }
+  
+        cloudFunctions.getData("mark", query, 100).then((res: any) => {
+          console.log(res)
+
+          this.data.resultMap[keyword] = res;
+  
+          this.setData({
+            results: res,
+            showResults: res.length > 0,
+          });
+        })
+      }
+    },
+
+    onClickItem(e: any) {
+      const item = e.currentTarget.dataset.item;
+      EventBus.emit(AppEvent.SEARCH_MARKER, [item])
+      this.setData({
+        showResults: false
       })
     },
 
-    onClickItem(e:any){
-      const item = e.currentTarget.dataset.item;
-      EventBus.emit(AppEvent.SEARCH_MARKER,item)
+    onSearch() {
+      if (this.data.results.length > 0)
+        EventBus.emit(AppEvent.SEARCH_MARKER, this.data.results)
       this.setData({
-        showResults:false
+        showResults: false
       })
     }
   }

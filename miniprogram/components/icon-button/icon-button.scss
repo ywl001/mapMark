@@ -1,0 +1,7 @@
+/* components/icon-button/icon-button.wxss */
+.btn {
+  transition: transform 0.1s ease;
+}
+.pressed {
+  transform: scale(1.25);
+}

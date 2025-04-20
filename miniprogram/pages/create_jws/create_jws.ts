@@ -140,7 +140,7 @@ Page({
       const id = this.data.markerData._id;
       db.updateById('mark',id,data).then((res: any)=>{
         console.log("edit marker complete", res);
-        EventBus.emit(AppEvent.REFRESH_MARK, res);
+        EventBus.emit(AppEvent.REFRESH_MARKER);
         wx.navigateBack()
       })
     }else{
@@ -150,7 +150,7 @@ Page({
       this.data.markerData.level = 12;
       db.add('mark', this.data.markerData).then((res: any) => {
         console.log("add marker complete", res);
-        EventBus.emit(AppEvent.REFRESH_MARK, res);
+        EventBus.emit(AppEvent.REFRESH_MARKER);
         wx.navigateBack()
       })
     }

@@ -22,9 +22,9 @@ Page({
   initUserInfo() {
     wx.cloud.callFunction({
       name: 'getUserInfo',
-      complete: (res:any) => {
+      complete: (res: any) => {
         // NOTE: 将openid存储到globalData供全局使用
-        getApp().globalData.userid = res.result.openid 
+        getApp().globalData.userid = res.result.openid
       }
     })
   },
@@ -34,9 +34,9 @@ Page({
    */
   setupEventListeners() {
     // NOTE: 监听显示标记点信息事件
-    EventBus.on(AppEvent.SHOW_MARKER_INFO,this.onShowMarkerInfo)
+    EventBus.on(AppEvent.SHOW_MARKER_INFO, (e) => { this.onShowMarkerInfo(e) })
     // NOTE: 监听移除标记点信息事件
-    EventBus.on(AppEvent.REMOVE_MARKER_INFO, this.onTapMapBlank)
+    EventBus.on(AppEvent.REMOVE_MARKER_INFO, () => { this.hideMarkInfo() })
   },
 
   /**
@@ -44,18 +44,17 @@ Page({
    * @param {Object} e - 事件对象
    * @param {string} e.detail.type - 选择的类型 camera/policeStation 
    */
-  onPickerSelect(e:any) {
+  onPickerSelect(e: any) {
     const { type } = e.detail
     this.setData({ showPicker: false }) // NOTE: 选择后隐藏弹窗
     getApp().type = type // NOTE: 存储选择类型到全局
   },
-  
+
   /**
    * 显示标记点信息
    * @param {Object} data - 标记点数据 
    */
-  onShowMarkerInfo(data:Marker) {
-    console.log(data)
+  onShowMarkerInfo(data: Marker) {
     if (!data) return
     this.setData({ currentMarkerData: data.source })
   },
@@ -63,7 +62,8 @@ Page({
   /**
    * 点击地图空白处时清除当前标记点
    */
-  onTapMapBlank() {
+  hideMarkInfo() {
+    console.log(this.data.currentMarkerData)
     this.setData({ currentMarkerData: {} })
   }
 })

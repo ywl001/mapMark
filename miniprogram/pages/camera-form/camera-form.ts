@@ -18,7 +18,7 @@ Page({
       cameraType: '枪机',
       level: 12
     } as MarkerData,
-    cameraTypes: ['枪机', '球机', '卡口'],  // 你可以在这里定义监控类型
+    cameraTypes: ['枪机', '球机', '卡口','社会监控'],  // 你可以在这里定义监控类型
     selectedType: 0,  // 默认选择第一个类型
     showAnglePicker: false, // 是否显示照射方向选择器
     isEdit: false,
@@ -180,7 +180,7 @@ Page({
       const id = this.data.markerData._id;
       db.updateById('mark', id, data).then((res: any) => {
         console.log("edit marker complete", res);
-        EventBus.emit(AppEvent.REFRESH_MARKER);
+        EventBus.emit(AppEvent.DEL_MARK,id)
         wx.navigateBack()
       })
     } else {

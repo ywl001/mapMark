@@ -1,6 +1,30 @@
 <view>
-  <map></map>
-  <marker-info class="marker-info" wx:if="{{currentMarkerData.name}}" markerData="{{currentMarkerData}}"></marker-info>
-  <search class="search"></search>
+	<map/>
+	<view class="top-left-buttons">
+		<icon-button
+		 src="../../assets/layer.svg"
+		 pressedSrc="../../assets/layer_press.svg"
+		 size='60'
+		 bind:tap="changeLayer"
+		/>
+		<view class="horizontal-line" />
+		<icon-button
+		 src="../../assets/setup.svg"
+		 pressedSrc="../../assets/setup_press.svg"
+		 size='60'
+		 bind:tap="changeType"
+		/>
+		<view class="horizontal-line" />
+		<icon-button
+		 src="../../assets/statistics.svg"
+		 pressedSrc="../../assets/statistics_press.svg"
+		 size='60'
+		 bind:tap="countByCreateUser"
+		/>
+	</view>
+	<marker-info class="marker-info" wx:if="{{currentMarkerData.name}}" markerData="{{currentMarkerData}}" />
+	<search class="search" />
 </view>
-<!-- <function-picker show="{{showPicker}}" bind:select="onPickerSelect" /> -->
+<function-picker show="{{showPicker}}" bind:select="onPickerSelect" />
+<count-dialog statistics="{{statistics}}" showDialog="{{isShowCountDialog}}" bind:close="closeDialog" />
+

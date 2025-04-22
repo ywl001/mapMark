@@ -9,7 +9,8 @@ export enum AppEvent {
   ADD_MARKER_COMPLETE = 'addMarkerComplete',
   MOVE_MARKER = 'moveMarker',
   DEL_MARK = "DEL_MARK",
-  CLEAR_SEARCH_MARKER = 'CLEAR_SEARCH_MARKER'
+  CLEAR_SEARCH_MARKER = 'CLEAR_SEARCH_MARKER',
+  CHANGE_MAP_LAYER = "CHANGE_MAP_LAYER"
 }
 
 export interface EventPayloadMap {
@@ -21,4 +22,5 @@ export interface EventPayloadMap {
   [AppEvent.ADD_MARKER_COMPLETE]:void,
   [AppEvent.DEL_MARK]:string,
   [AppEvent.CLEAR_SEARCH_MARKER]:void
+  [AppEvent.CHANGE_MAP_LAYER]:void
 }

@@ -15,7 +15,7 @@ map {
 /* 定位按钮：底部居中 */
 .btn-location {
   position: absolute;
-  bottom: 50rpx;
+  bottom: 20rpx;
   left: 50%;
   transform: translateX(-50%);
   width: 60rpx;
@@ -23,20 +23,11 @@ map {
   z-index: 10;
 }
 
-/* 右上角的两个按钮，垂直布局 */
-.right-buttons {
+/* 定位按钮：底部居中 */
+.scale {
   position: absolute;
-  top: 50rpx;
-  right: 20rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  bottom: 20rpx;
+  left: 10rpx;
   z-index: 10;
-}
-
-/* 按钮样式 */
-.btn {
-  width: 60rpx;
-  height: 60rpx;
-  margin-bottom: 20rpx; /* 两个按钮之间的间距 */
+  color: red;
 }

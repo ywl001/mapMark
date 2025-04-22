@@ -16,7 +16,7 @@
       <!-- <text class="contact-info" wx:if="markerData.level">{{markerData.level}}级</text> -->
     </view>
 
-    <view class="row buttons" wx:if="isEdit">
+    <view class="row buttons" wx:if="{{isEdit}}">
       <view class="button-wrapper" bind:tap="onEdit">
         <view class="button btn_edit"  ></view>
       </view>

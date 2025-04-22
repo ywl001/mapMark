@@ -1,9 +1,10 @@
 // pages/create_jws.js
 
 import { MarkerData } from "../../app-types";
-import db from "../../utils/db";
+import cloudFunctions from "../../utils/cloud-functions";
 import { AppEvent } from "../../utils/event-bus/event-type";
 import EventBus from "../../utils/event-bus/EventBus";
+import resizeAndCompressImage from "../../utils/photo-utils";
 import StorageKey from "../../utils/storageKey";
 import { getChangeData } from "../../utils/util";
 
@@ -49,24 +50,62 @@ Page({
     console.log(this.data)
   },
 
-  // 选择或拍摄照片
-  choosePhoto() {
-    this.setData({
-      isSubmitDisabled:true
-    })
+  // // 选择或拍摄照片
+  // choosePhoto() {
+  //   this.setData({
+  //     isSubmitDisabled:true
+  //   })
    
+  //   wx.chooseMedia({
+  //     count: 1, // 只选择一张
+  //     mediaType: ['image'],
+  //     success: res => {
+  //       const filePath = res.tempFiles[0].tempFilePath;
+  //       this.uploadPhoto(filePath); // 上传照片
+  //     },
+  //     fail: ()=>{
+  //       console.log('choose media fail')
+  //       this.setData({
+  //         isSubmitDisabled:false
+  //       })
+  //     }
+  //   });
+  // },
+
+  choosePhoto(): void {
+    this.setData({
+      isSubmitDisabled: true
+    });
+
     wx.chooseMedia({
-      count: 1, // 只选择一张
+      count: 1,
       mediaType: ['image'],
-      success: res => {
-        const filePath = res.tempFiles[0].tempFilePath;
-        this.uploadPhoto(filePath); // 上传照片
+      sourceType: ['camera', 'album'],
+      success: (res: WechatMiniprogram.ChooseMediaSuccessCallbackResult) => {
+        const filePath: string = res.tempFiles[0].tempFilePath;
+        // 延迟处理，确保拍照文件稳定
+        setTimeout(() => {
+          const targetSize: number = 1000; // 可动态调整，例如 800 或 1200
+          resizeAndCompressImage(filePath, targetSize, (compressedFilePath: string | null) => {
+            if (compressedFilePath) {
+              this.uploadPhoto(compressedFilePath);
+            } else {
+              this.setData({
+                isSubmitDisabled: false
+              });
+            }
+          });
+        }, 500);
       },
-      fail: ()=>{
-        console.log('choose media fail')
+      fail: (err: WechatMiniprogram.GeneralCallbackResult) => {
+        console.log('choose media fail', err);
         this.setData({
-          isSubmitDisabled:false
-        })
+          isSubmitDisabled: false
+        });
+        wx.showToast({
+          title: '选择图片失败',
+          icon: 'none'
+        });
       }
     });
   },
@@ -133,12 +172,12 @@ Page({
   // 提交表单
   onSubmit: function () {
     console.log(this.data)
-    // if(!this.validateInput()) return;
+    if(!this.validateInput()) return;
     if(this.data.isEdit){
       const data = getChangeData(this.data.originalData,this.data.markerData)
       console.log(data)
       const id = this.data.markerData._id;
-      db.updateById('mark',id,data).then((res: any)=>{
+      cloudFunctions.updateDataById('mark',id,data).then((res: any)=>{
         console.log("edit marker complete", res);
         EventBus.emit(AppEvent.REFRESH_MARKER);
         wx.navigateBack()
@@ -148,7 +187,7 @@ Page({
       this.data.markerData.userid = userid;
       this.data.markerData.type = 'policeStation';
       this.data.markerData.level = 12;
-      db.add('mark', this.data.markerData).then((res: any) => {
+      cloudFunctions.addData('mark', this.data.markerData).then((res: any) => {
         console.log("add marker complete", res);
         EventBus.emit(AppEvent.REFRESH_MARKER);
         wx.navigateBack()
@@ -156,15 +195,15 @@ Page({
     }
   },
 
-  // validateInput(){
-  //   if(!this.data.markerData?.name || this.data.markerData.name == ''){
-  //     wx.showToast({
-  //       title: '警务室名称必须填写',
-  //     })
-  //     return false;
-  //   }
-  //   return true;
-  // },
+  validateInput(){
+    if(!this.data.markerData?.name || this.data.markerData.name == ''){
+      wx.showToast({
+        title: '警务室名称必须填写',
+      })
+      return false;
+    }
+    return true;
+  },
 
   // 取消操作
   onCancel: function () {

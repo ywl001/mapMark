@@ -1,5 +1,4 @@
-import { MarkerData } from '../../app-types';
-import db from '../../utils/db';
+import cloudFunctions from '../../utils/cloud-functions';
 import { AppEvent } from '../../utils/event-bus/event-type';
 import EventBus from '../../utils/event-bus/EventBus';
 import { alertTool } from '../../utils/util';
@@ -16,8 +15,9 @@ Component({
   ready() {
     console.log('mark info ready', this.properties.markerData)
     this.setData({
-      isEdit: this.properties.markerData.userid == getApp().globalData.userid
+      isEdit: this.properties.markerData.userid === getApp().globalData.userid
     })
+    console.log(this.data.isEdit)
   },
   methods: {
     onEdit() {
@@ -53,13 +53,12 @@ Component({
       const res = await alertTool('删除警告', '确定要删除该记录吗？')
       console.log(res)
       if (res) {
-        const delResult = await db.deleteById('mark', this.data.markerData._id)
-        if (delResult) {
+        const res:any = await cloudFunctions.deleteDataById('mark', this.data.markerData._id)
+        if (res.success) {
           EventBus.emit(AppEvent.DEL_MARK,this.data.markerData._id)
           if (fileId) {
             await wx.cloud.deleteFile({ fileList: [fileId] });
           }
-          EventBus.emit(AppEvent.DEL_MARK,this.data.markerData._id)
         }else{
           wx.showToast({
             title: '删除失败',

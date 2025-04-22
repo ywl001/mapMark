@@ -1,58 +1,72 @@
 /* pages/create_jws.wxss */
 .container {
-  padding: 20px;
+  padding: 30rpx;
+  width: 100%;
 }
 
 .form-item {
   box-sizing: border-box;
-  width: 100%;
+  width: 95%;
   margin-bottom: 20rpx;
   margin-right: 20rpx;
+
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
 
 .buttons {
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content:space-around;
+  margin-top: 50rpx;
+
+  .button {
+    width: 40%;
+    padding: 10rpx;
+    border: none;
+    border-radius: 5rpx;
+    text-align: center;
+    line-height: 70rpx; /* 控制按钮的文本垂直居中 */
+    color: #fff;
+    background-color: #2196F3; /* 默认按钮颜色 */
+  }
+  
+  .confirm-btn {
+    background-color: #4CAF50;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+  }
 }
 
-button {
-  width: 48%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-}
 
-.confirm-btn {
-  background-color: #4CAF50;
-}
-
-.cancel-btn {
-  background-color: #f44336;
-}
 
 .upload-photo {
-  width:100%;
   display: flex;
-  align-items:flex-start;
-}
-
-.upload_btn{
-  background-color: blue;
   width: 100%;
+
+  .upload-btn {
+    width: 200rpx;
+    height: 200rpx;
+    padding: 0;
+    margin-right: 20rpx;
+    background-size: cover;
+    border: none;
+  }
+  
+  .photo-preview {
+    height: 200rpx;
+    max-width: 300rpx;
+    border-radius: 8rpx;
+    object-fit:initial;
+  }
 }
 
-.photo-preview {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-top: 10px;
-}

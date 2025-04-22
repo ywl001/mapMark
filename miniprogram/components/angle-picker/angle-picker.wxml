@@ -1,7 +1,7 @@
 <view class="container" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
   <!-- 背景图片 -->
-  <image class="bg-img" src="../../assets/znz_bg.png"></image>
+  <image class="bg-img" src="../../assets/znz_bg.svg"></image>
   <!-- 指针图片 -->
-  <image class="pointer" src="../../assets/znz.png" style="transform: rotate({{angle}}deg);"></image>
+  <image class="pointer" src="../../assets/znz.svg" style="transform: rotate({{angle}}deg);"></image>
 </view>
 

@@ -10,7 +10,7 @@ export interface MarkerData {
   angle?: number
   tel?: string
   cameraType?: string
-  level?: number
+  level: number
 }
 
 export interface MapRegion {
@@ -104,4 +104,6 @@ export interface Marker {
   source?: any,
   iconSelected?: string,
   icon?: any
+
+  level:number
 }

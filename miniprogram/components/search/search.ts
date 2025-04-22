@@ -1,5 +1,4 @@
 import cloudFunctions from "../../utils/cloud-functions";
-import db from "../../utils/db";
 import { AppEvent } from "../../utils/event-bus/event-type";
 import EventBus from "../../utils/event-bus/EventBus";
 

@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk');
 
 // 初始化云开发环境
-cloud.init();
+cloud.init({env: cloud.DYNAMIC_CURRENT_ENV });
 
 // 获取数据库引用
 const db = cloud.database();

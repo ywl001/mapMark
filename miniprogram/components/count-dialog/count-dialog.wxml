@@ -1,0 +1,12 @@
+<view wx:if="{{showDialog}}" class="dialog-overlay">
+  <view class="dialog">
+    <view class="dialog-header">统计结果</view>
+    <view class="dialog-body">
+      <view wx:for="{{statistics}}" wx:key="index" class="stat-item">
+        <text class="stat-label">{{item._id}}:</text>
+        <text class="stat-count">{{item.count}}</text>
+      </view>
+    </view>
+    <button class="close-btn" bindtap="closeDialog">关闭</button>
+  </view>
+</view>

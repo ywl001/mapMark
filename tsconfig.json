@@ -17,6 +17,9 @@
     "strict": false,
     "strictPropertyInitialization": true,
     "lib": ["ES2020"],
+    "sourceMap": true,
+    "inlineSources": true,  // 将源码内联到 Source Map
+    "sourceRoot": "/", 
     "typeRoots": [
       "./typings"
     ]

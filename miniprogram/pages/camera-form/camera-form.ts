@@ -1,7 +1,8 @@
 import { MarkerData } from "../../app-types";
-import db from "../../utils/db";
+import cloudFunctions from "../../utils/cloud-functions";
 import { AppEvent } from "../../utils/event-bus/event-type";
 import EventBus from "../../utils/event-bus/EventBus";
+import resizeAndCompressImage from "../../utils/photo-utils";
 import StorageKey from "../../utils/storageKey";
 import { getChangeData } from "../../utils/util";
 
@@ -16,9 +17,9 @@ Page({
   data: {
     markerData: {
       cameraType: '枪机',
-      level: 12
+      level: 16
     } as MarkerData,
-    cameraTypes: ['枪机', '球机', '卡口','社会监控'],  // 你可以在这里定义监控类型
+    cameraTypes: ['枪机', '球机', '卡口', '社会监控'],  // 你可以在这里定义监控类型
     selectedType: 0,  // 默认选择第一个类型
     showAnglePicker: false, // 是否显示照射方向选择器
     isEdit: false,
@@ -44,6 +45,10 @@ Page({
         if (m) {
           this.setData({ "markerData.owner": m })
         }
+        const createUser = wx.getStorageSync(StorageKey.CREATE_USER)
+        if (createUser) {
+          this.setData({ 'markerData.createUser': createUser })
+        }
       }
       getApp().globalData.markerData = null
     }
@@ -63,11 +68,13 @@ Page({
     })
   },
 
-  onPhoneInput(e: { detail: { value: any; }; }) {
+  onCreateUserInput(e: { detail: { value: any; }; }) {
     this.setData({
-      'markerData.tel': e.detail.value
+      'markerData.createUser': e.detail.value
     })
+    wx.setStorageSync(StorageKey.CREATE_USER, e.detail.value)
   },
+
   onOwnerInput(e: { detail: { value: any; }; }) {
 
     console.log('owner', e.detail.value)
@@ -76,6 +83,7 @@ Page({
     })
     wx.setStorageSync(StorageKey.OWNER, e.detail.value)
   },
+
   onNameInput(e: { detail: { value: any; }; }) {
     this.setData({
       'markerData.name': e.detail.value
@@ -112,23 +120,61 @@ Page({
     });
   },
 
-  choosePhoto() {
+  // choosePhoto() {
+  //   this.setData({
+  //     isSubmitDisabled: true
+  //   })
+
+  //   wx.chooseMedia({
+  //     count: 1, // 只选择一张
+  //     mediaType: ['image'],
+  //     success: res => {
+  //       const filePath = res.tempFiles[0].tempFilePath;
+  //       this.uploadPhoto(filePath); // 上传照片
+  //     },
+  //     fail: () => {
+  //       console.log('choose media fail')
+  //       this.setData({
+  //         isSubmitDisabled: true
+  //       })
+  //     }
+  //   });
+  // },
+
+  choosePhoto(): void {
     this.setData({
       isSubmitDisabled: true
-    })
+    });
 
     wx.chooseMedia({
-      count: 1, // 只选择一张
+      count: 1,
       mediaType: ['image'],
-      success: res => {
-        const filePath = res.tempFiles[0].tempFilePath;
-        this.uploadPhoto(filePath); // 上传照片
+      sourceType: ['camera', 'album'],
+      success: (res: WechatMiniprogram.ChooseMediaSuccessCallbackResult) => {
+        const filePath: string = res.tempFiles[0].tempFilePath;
+        // 延迟处理，确保拍照文件稳定
+        setTimeout(() => {
+          const targetSize: number = 1000; // 可动态调整，例如 800 或 1200
+          resizeAndCompressImage(filePath, targetSize, (compressedFilePath: string | null) => {
+            if (compressedFilePath) {
+              this.uploadPhoto(compressedFilePath);
+            } else {
+              this.setData({
+                isSubmitDisabled: false
+              });
+            }
+          });
+        }, 500);
       },
-      fail: () => {
-        console.log('choose media fail')
+      fail: (err: WechatMiniprogram.GeneralCallbackResult) => {
+        console.log('choose media fail', err);
         this.setData({
-          isSubmitDisabled: true
-        })
+          isSubmitDisabled: false
+        });
+        wx.showToast({
+          title: '选择图片失败',
+          icon: 'none'
+        });
       }
     });
   },
@@ -173,21 +219,26 @@ Page({
 
   onConfirm() {
     console.log(this.data)
-    // if(!this.validateInput()) return;
+    if (!this.validateInput()) return;
     if (this.data.isEdit) {
       const data = getChangeData(this.data.originalData, this.data.markerData)
       console.log(data)
       const id = this.data.markerData._id;
-      db.updateById('mark', id, data).then((res: any) => {
-        console.log("edit marker complete", res);
-        EventBus.emit(AppEvent.DEL_MARK,id)
+      cloudFunctions.updateDataById('mark', id, data).then((res: any) => {
+        if (res.success) {
+          EventBus.emit(AppEvent.DEL_MARK, id)
+        } else {
+          wx.showToast({
+            title: '更新失败'
+          })
+        }
         wx.navigateBack()
       })
     } else {
       const userid = getApp().globalData.userid
       this.data.markerData.userid = userid;
       this.data.markerData.type = 'camera';
-      db.add('mark', this.data.markerData).then((res: any) => {
+      cloudFunctions.addData('mark', this.data.markerData).then((res: any) => {
         console.log("add camera complete", res);
         EventBus.emit(AppEvent.REFRESH_MARKER);
         wx.navigateBack()
@@ -202,7 +253,7 @@ Page({
   },
 
   validateInput() {
-    if (!this.data.markerData?.name || this.data.markerData.name == '') {
+    if (!this.data.markerData.name || this.data.markerData.name == '') {
       wx.showToast({
         title: '监控名称必须填写',
       })

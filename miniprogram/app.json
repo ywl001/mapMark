@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/camera-form/camera-form",
-    "pages/create_jws/create_jws"
+    "pages/create_jws/create_jws",
+    "pages/camera-form/camera-form"
   ],
   "window": {
     "navigationBarTextStyle": "black",

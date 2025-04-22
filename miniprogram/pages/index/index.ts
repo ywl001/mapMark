@@ -1,11 +1,14 @@
 import { Marker } from "../../app-types"
+import cloudFunctions from "../../utils/cloud-functions"
 import { AppEvent } from "../../utils/event-bus/event-type"
 import EventBus from "../../utils/event-bus/EventBus"
 
 Page({
   data: {
     currentMarkerData: {},  // NOTE: 当前选中的标记点数据
-    showPicker: true       // NOTE: 是否显示功能选择器
+    showPicker: true,      // NOTE: 是否显示功能选择器
+    isShowCountDialog: false,
+    statistics: []
   },
 
   /**
@@ -65,5 +68,29 @@ Page({
   hideMarkInfo() {
     console.log(this.data.currentMarkerData)
     this.setData({ currentMarkerData: {} })
+  },
+
+  changeLayer() {
+    EventBus.emit(AppEvent.CHANGE_MAP_LAYER)
+  },
+
+  changeType() {
+    this.setData({ showPicker: true })
+  },
+
+  countByCreateUser() {
+    cloudFunctions.countByCreateUser('mark','camera').then((res:any)=>{
+      this.setData({
+        statistics:res.list,
+        isShowCountDialog:true
+      })
+      console.log(res)
+    })
+  },
+
+  closeDialog(){
+    this.setData({
+      isShowCountDialog:false
+    })
   }
 })

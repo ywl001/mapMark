@@ -34,15 +34,19 @@ slider {
 
 .buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content:space-around;
+  margin-top: 50rpx;
 }
 
-button {
-  width: 48%;
-  padding: 10px;
+.button {
+  width: 40%;
+  padding: 10rpx;
   border: none;
-  border-radius: 5px;
+  border-radius: 5rpx;
+  text-align: center;
+  line-height: 70rpx; /* 控制按钮的文本垂直居中 */
   color: #fff;
+  background-color: #2196F3; /* 默认按钮颜色 */
 }
 
 .confirm-btn {
@@ -56,7 +60,8 @@ button {
 .upload-photo {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30rpx;
+  margin-top: 30rpx;
 }
 
 .upload-btn {
